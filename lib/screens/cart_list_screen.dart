@@ -15,14 +15,13 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    
     // calculate total price
     double totalPrice = 0.0;
     final cartBloc = context.read<CartBloc>();
     for (var element in cartBloc.state.cardItems) {
       totalPrice = totalPrice + element.price;
     }
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Cart'),
@@ -32,35 +31,44 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: BlocBuilder<CartBloc, CartState>(
         builder: (BuildContext context, CartState state) {
-          if (state.cardItems.isEmpty == true) { // if cart is empty
+          if (state.cardItems.isEmpty == true) {
+            // if cart is empty
             return const Center(
               child: Text(
                 'Your cart is empty!',
                 style: TextStyle(fontSize: 18),
               ),
             );
-          } else { // if there are some products added in the cart
+          } else {
+            // if there are some products added in the cart
             return ListView.builder(
                 itemCount: state.cardItems.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              ProductDetailsScreen(product: state.cardItems[index])));
+                          builder: (context) => ProductDetailsScreen(
+                              product: state.cardItems[index])));
                     },
                     leading: CircleAvatar(
                       backgroundImage:
                           AssetImage(state.cardItems[index].thumbnail),
                       radius: 25,
                     ),
-                    title: Text(state.cardItems[index].name, style: const TextStyle(fontSize: 18),),
-                    subtitle: Text('\$${state.cardItems[index].price}', style: const TextStyle(fontSize: 15),),
+                    title: Text(
+                      state.cardItems[index].name,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    subtitle: Text(
+                      '\$${state.cardItems[index].price}',
+                      style: const TextStyle(fontSize: 15),
+                    ),
                     trailing: IconButton(
                         onPressed: () {
                           final cartBloc = BlocProvider.of<CartBloc>(context);
                           cartBloc.add(RemoveFromCart(state.cardItems[index]));
-                          setState(() {});// update total price after removing product from the cart
+                          setState(
+                              () {}); // update total price after removing product from the cart
                         },
                         icon: const Icon(Icons.remove_shopping_cart_outlined)),
                   );
@@ -82,12 +90,21 @@ class _CartScreenState extends State<CartScreen> {
           ],
         ),
         child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Total Price', style: TextStyle(color: Colors.black54, fontSize: 18),),
-                Text('\$$totalPrice', style: const TextStyle(color: Colors.deepPurple, fontSize: 23, fontWeight: FontWeight.bold),),
-              ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Total Price',
+              style: TextStyle(color: Colors.black54, fontSize: 18),
             ),
+            Text(
+              '\$$totalPrice',
+              style: const TextStyle(
+                  color: Colors.deepPurple,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     );
   }

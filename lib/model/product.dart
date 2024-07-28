@@ -15,5 +15,4 @@ class Product {
     required this.imageUrl,
     this.quantity = 0,
   });
-  
 }

@@ -13,11 +13,9 @@ class ProductListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Check if UI build first time, add initial product in the product list
     final productBloc = context.read<ProductBloc>();
-    if(productBloc.state.allProducts.isEmpty) 
-    {
+    if (productBloc.state.allProducts.isEmpty) {
       // initialize product list with one item after that you can add more using pull to refresh option
       productBloc.add(InitProductEvent());
     }
@@ -63,32 +61,44 @@ class ProductListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh:() async{
-          // fetch new products 
-          productBloc.add(GetNewProductEvent(productBloc.state.allProducts.length));
-        },
-        child: BlocBuilder<ProductBloc, ProductState>(builder:(context, state) {
-      
+      body: RefreshIndicator(onRefresh: () async {
+        // fetch new products
+        productBloc
+            .add(GetNewProductEvent(productBloc.state.allProducts.length));
+      }, child: BlocBuilder<ProductBloc, ProductState>(
+        builder: (context, state) {
           return ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: state.allProducts.length,
-            itemBuilder: (context, index) {
-              final product = state.allProducts[index];
-              return ListTile(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: product)));
-                },
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage(product.thumbnail),
-                  radius: 25,
-                ),
-                title: Text(product.name, style: const TextStyle(fontSize: 18,),),
-                subtitle: Text('\$${product.price}', style: const TextStyle(fontSize: 15,),),
-              );
-            });
-        },)
-      ),
+              scrollDirection: Axis.vertical,
+              itemCount: state.allProducts.length,
+              itemBuilder: (context, index) {
+                final product = state.allProducts[index];
+                return ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailsScreen(product: product)));
+                  },
+                  leading: Image.asset(
+                    product.thumbnail,
+                    width: 100,
+                    height: 150,
+                  ),
+                  title: Text(
+                    product.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '\$${product.price}',
+                    style: const TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                );
+              });
+        },
+      )),
     );
   }
 }

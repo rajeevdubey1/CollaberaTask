@@ -8,7 +8,6 @@ abstract class ProductEvent extends Equatable {
 
 // when application initialize, we will call this event to get one product in product list
 class InitProductEvent extends ProductEvent {
-
   @override
   List<Object> get props => [];
 }
