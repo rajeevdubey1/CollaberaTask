@@ -29,7 +29,7 @@ we have three screens in the application, product list, product details and cart
 
 (a) I am using bloc state management technique to manage the state after adding or removing products in the cart. Also using bloc for fetching the new products from the server.
 
-(b) For APIs call I will use http package to fetch the product list and handle the http request using try-catch block to handle the server side error better to avoid any crashes in the app.
+(b) For APIs call I am using http package to fetch the product list and handle the http request using try-catch block to handle the server side error better to avoid any crashes in the app.
 
 
                        
