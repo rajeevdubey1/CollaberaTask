@@ -21,12 +21,13 @@ class ProductItem extends StatelessWidget {
         title: Text(
           product.title!,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
+            fontWeight: FontWeight.w500
           ),
         ),
         subtitle: Text(
           '\$${product.price}',
-          style: const TextStyle(fontSize: 15, color: Color(0xFF7165D6)),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF7165D6)),
         ),
       ),
     );

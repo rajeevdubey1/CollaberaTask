@@ -57,11 +57,11 @@ class _CartScreenState extends State<CartScreen> {
                           imageUrlString: state.cardItems[index].image!),
                       title: Text(
                         state.cardItems[index].title!,
-                        style: const TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                       subtitle: Text(
                         '\$${state.cardItems[index].price}',
-                        style: const TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF7165D6)),
                       ),
                       trailing: IconButton(
                           onPressed: () {

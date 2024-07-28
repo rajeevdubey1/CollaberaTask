@@ -46,7 +46,7 @@ class ProductListScreen extends StatelessWidget {
                     ),
                     child: Text(
                       '$count',
-                      style: const TextStyle(fontSize: 8, color: Colors.white),
+                      style: const TextStyle(fontSize: 10, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                   )),
