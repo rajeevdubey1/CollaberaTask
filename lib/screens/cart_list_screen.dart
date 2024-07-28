@@ -2,6 +2,7 @@ import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_bloc.dart';
 import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_event.dart';
 import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_state.dart';
 import 'package:collabera_task/screens/product_details_screen.dart';
+import 'package:collabera_task/widgets/product_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     // calculate total price
-    double totalPrice = 0.0;
+    double totalPrice = 0;
     final cartBloc = context.read<CartBloc>();
     for (var element in cartBloc.state.cardItems) {
       totalPrice = totalPrice + element.price;
@@ -44,33 +45,35 @@ class _CartScreenState extends State<CartScreen> {
             return ListView.builder(
                 itemCount: state.cardItems.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProductDetailsScreen(
-                              product: state.cardItems[index])));
-                    },
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          AssetImage(state.cardItems[index].thumbnail),
-                      radius: 25,
+                  return Card(
+                    color: Colors.white,
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProductDetailsScreen(
+                                product: state.cardItems[index])));
+                      },
+                      leading: ProductImage(
+                          imageUrlString: state.cardItems[index].image!),
+                      title: Text(
+                        state.cardItems[index].title!,
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      subtitle: Text(
+                        '\$${state.cardItems[index].price}',
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                      trailing: IconButton(
+                          onPressed: () {
+                            final cartBloc = BlocProvider.of<CartBloc>(context);
+                            cartBloc
+                                .add(RemoveFromCart(state.cardItems[index]));
+                            setState(
+                                () {}); // update total price after removing product from the cart
+                          },
+                          icon:
+                              const Icon(Icons.remove_shopping_cart_outlined)),
                     ),
-                    title: Text(
-                      state.cardItems[index].name,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    subtitle: Text(
-                      '\$${state.cardItems[index].price}',
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                    trailing: IconButton(
-                        onPressed: () {
-                          final cartBloc = BlocProvider.of<CartBloc>(context);
-                          cartBloc.add(RemoveFromCart(state.cardItems[index]));
-                          setState(
-                              () {}); // update total price after removing product from the cart
-                        },
-                        icon: const Icon(Icons.remove_shopping_cart_outlined)),
                   );
                 });
           }

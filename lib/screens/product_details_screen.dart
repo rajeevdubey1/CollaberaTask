@@ -1,12 +1,12 @@
 import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_bloc.dart';
 import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_event.dart';
-import 'package:collabera_task/model/product.dart';
+import 'package:collabera_task/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({super.key, required this.product});
-  final Product product; // receiving product data from it's parent class
+  final ProductModel product; // receiving product data from it's parent class
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class ProductDetailsScreen extends StatelessWidget {
               // showing product original image
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Hero(
-                tag: product.id,
+                tag: product.id!,
                 child: Image.network(
-                  product.imageUrl,
+                  product.image!,
                   width: double.infinity,
                   height: 300,
                   fit: BoxFit.cover,
@@ -37,14 +37,17 @@ class ProductDetailsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  // showing product name
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Padding(
+                    // showing product name
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Text(
+                      product.title!,
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -64,11 +67,11 @@ class ProductDetailsScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Padding(
+            Padding(
               // showing product description with dummy data
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                product.description!,
                 maxLines: 7,
               ),
             ),
@@ -101,7 +104,7 @@ class ProductDetailsScreen extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: 60,
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+          margin: const EdgeInsets.only(bottom: 30, left: 10, right: 10),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(10),

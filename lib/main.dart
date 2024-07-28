@@ -1,5 +1,5 @@
 import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_bloc.dart';
-import 'package:collabera_task/bloc/get_products_bloc/get_product_bloc.dart';
+import 'package:collabera_task/bloc/get_products_bloc/product_bloc.dart';
 import 'package:collabera_task/screens/product_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

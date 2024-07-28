@@ -1,7 +1,7 @@
-import 'package:collabera_task/model/product.dart';
+import 'package:collabera_task/model/product_model.dart';
 
 // Cart state will carry all items of the cart
 class CartState {
-  final List<Product> cardItems;
+  final List<ProductModel> cardItems;
   CartState(this.cardItems);
 }

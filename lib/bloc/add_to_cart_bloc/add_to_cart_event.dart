@@ -1,4 +1,4 @@
-import 'package:collabera_task/model/product.dart';
+import 'package:collabera_task/model/product_model.dart';
 import 'package:equatable/equatable.dart';
 
 // Base Cart event class
@@ -9,7 +9,7 @@ abstract class CartEvent extends Equatable {
 
 // event to add product in cart
 class AddToCart extends CartEvent {
-  final Product product;
+  final ProductModel product;
   AddToCart(this.product);
 
   @override
@@ -18,7 +18,7 @@ class AddToCart extends CartEvent {
 
 // event to remove product from the cart
 class RemoveFromCart extends CartEvent {
-  final Product product;
+  final ProductModel product;
   RemoveFromCart(this.product);
 
   @override

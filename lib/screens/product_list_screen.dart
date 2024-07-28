@@ -1,10 +1,10 @@
 import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_bloc.dart';
 import 'package:collabera_task/bloc/add_to_cart_bloc/add_to_cart_state.dart';
-import 'package:collabera_task/bloc/get_products_bloc/get_product_bloc.dart';
-import 'package:collabera_task/bloc/get_products_bloc/get_product_event.dart';
-import 'package:collabera_task/bloc/get_products_bloc/get_product_state.dart';
+import 'package:collabera_task/bloc/get_products_bloc/product_event.dart';
+import 'package:collabera_task/bloc/get_products_bloc/product_state.dart';
+import 'package:collabera_task/bloc/get_products_bloc/product_bloc.dart';
 import 'package:collabera_task/screens/cart_list_screen.dart';
-import 'package:collabera_task/screens/product_details_screen.dart';
+import 'package:collabera_task/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,12 +13,7 @@ class ProductListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Check if UI build first time, add initial product in the product list
-    final productBloc = context.read<ProductBloc>();
-    if (productBloc.state.allProducts.isEmpty) {
-      // initialize product list with one item after that you can add more using pull to refresh option
-      productBloc.add(InitProductEvent());
-    }
+    context.read<ProductBloc>().add(ProductInitialFetchEvent());
 
     return Scaffold(
       appBar: AppBar(
@@ -62,41 +57,26 @@ class ProductListScreen extends StatelessWidget {
         ],
       ),
       body: RefreshIndicator(onRefresh: () async {
-        // fetch new products
-        productBloc
-            .add(GetNewProductEvent(productBloc.state.allProducts.length));
+        context.read<ProductBloc>().add(ProductInitialFetchEvent());
       }, child: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
-          return ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: state.allProducts.length,
-              itemBuilder: (context, index) {
-                final product = state.allProducts[index];
-                return ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            ProductDetailsScreen(product: product)));
-                  },
-                  leading: Image.asset(
-                    product.thumbnail,
-                    width: 100,
-                    height: 150,
-                  ),
-                  title: Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  subtitle: Text(
-                    '\$${product.price}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                    ),
-                  ),
-                );
-              });
+          if (state is ProductFetchingLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is ProductFetchingSuccessfulState) {
+            return ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: state.products.length,
+                itemBuilder: (context, index) {
+                  final product = state.products[index];
+                  return ProductItem(product: product);
+                });
+          } else {
+            return const Center(
+              child: Text('Unable to fetch products, please try again!'),
+            );
+          }
         },
       )),
     );
